@@ -12,7 +12,9 @@ PASSWORD = "secret_sauce"
 ### FUNCTIONS ###
 
 
-### RUNNING ###
+### TESTS ###
+
+# LOGIN
 def test_login(login_logout, input_username, input_password):
     page = login_logout
     page.goto(BASE_URL)
@@ -24,6 +26,7 @@ def test_login(login_logout, input_username, input_password):
     expect(page.locator('//*[@id="header_container"]/div[2]/span')).to_be_visible()
 
 
+# SELECT DROPDOWN OPTION
 def test_filter_a_to_z(login_logout, input_username, input_password):
     page = login_logout
     test_login(login_logout, input_username, input_password)
@@ -31,6 +34,7 @@ def test_filter_a_to_z(login_logout, input_username, input_password):
     expect(page.locator('//*[@id="header_container"]/div[2]/div[2]/span/span')).to_contain_text('Name (A to Z)')
 
 
+# SELECT DROPDOWN OPTION
 def test_filter_z_to_a(login_logout, input_username, input_password):
     page = login_logout
     test_login(login_logout, input_username, input_password)
@@ -38,6 +42,7 @@ def test_filter_z_to_a(login_logout, input_username, input_password):
     expect(page.locator('//*[@id="header_container"]/div[2]/div[2]/span/span')).to_contain_text('Name (Z to A)')
 
 
+# SELECT DROPDOWN OPTION
 def test_filter_price_lohi(login_logout, input_username, input_password):
     page = login_logout
     test_login(login_logout, input_username, input_password)
@@ -45,6 +50,7 @@ def test_filter_price_lohi(login_logout, input_username, input_password):
     expect(page.locator('//*[@id="header_container"]/div[2]/div[2]/span/span')).to_contain_text('Price (low to high)')
 
 
+# SELECT DROPDOWN OPTION
 def test_filter_price_hilo(login_logout, input_username, input_password):
     page = login_logout
     test_login(login_logout, input_username, input_password)
@@ -52,79 +58,15 @@ def test_filter_price_hilo(login_logout, input_username, input_password):
     expect(page.locator('//*[@id="header_container"]/div[2]/div[2]/span/span')).to_contain_text('Price (high to low)')
 
 
-
-#
-# def test_filter_z_to_a(playwright):
-#         browser = playwright.chromium.launch(headless=False, slow_mo=50)
-#         context = browser.new_context()
-#         page = context.new_page()
-#         test_login(playwright)
-#         page.locator('//*[@id="header_container"]/div[2]/div[2]/span/span').select_option("za")
+# ADD ITEM TO CART
+def test_item_to_cart(login_logout, input_username, input_password):
+    page = login_logout
+    test_login(login_logout, input_username, input_password)
+    page.locator('//*[@id="add-to-cart-sauce-labs-backpack"]').click()
+    expect(page.locator('//*[@id="remove-sauce-labs-backpack"]')).to_be_visible()
 
 
-
-
-
-
-
-    # def test_scrollbars(playwright):
-    #     browser = playwright.chromium.launch(headless=False)
-    #     context = browser.new_context()
-    #     page = context.new_page()
-    #     page.goto(BASE_URL)
-    #     page.click('text=Scrollbars')
-    #     page.click('#hidingButton')
-    #
-    #
-    # ## Record click with dynamic id
-    # def test_button_dynamic_id(playwright):
-    #     browser = playwright.chromium.launch(headless=False)
-    #     context = browser.new_context()
-    #     page = context.new_page()
-    #     page.goto(BASE_URL)
-    #     page.click('text=Dynamic ID')
-    #     context.tracing.start(screenshots=True, snapshots=True, sources=True)
-    #     page.get_by_role("button", name="Button with Dynamic ID").click()
-    #     context.tracing.stop(path="trace.zip")
-    #
-    #
-    # def test_button_blue(playwright):
-    #     browser = playwright.chromium.launch(headless=False, slow_mo=100)
-    #     context = browser.new_context()
-    #     page = context.new_page()
-    #     page.goto(BASE_URL)
-    #     page.click('text=Class Attribute')
-    #     context.tracing.start(screenshots=True, snapshots=True, sources=True)
-    #     popup_handler(page, "//button[contains(concat(' ', normalize-space(@class), ' '), ' btn-primary ')]")
-    #     context.tracing.stop(path="trace.zip")
-    #
-    #
-    # ##WAIT FOR PAGE LOAD AND ELEMENT TO BE VISIBLE
-    # def test_wait_for_load(playwright):
-    #     browser = playwright.chromium.launch(headless=False, slow_mo=100)
-    #     context = browser.new_context()
-    #     page = context.new_page()
-    #     page.goto(BASE_URL)
-    #     page.click('text=Load Delay')
-    #     element = page.wait_for_selector("body > section > div > button")
-    #     locator = page.locator("body > section > div > button")
-    #     expect(locator).to_be_visible()
-    #
-    #
-    # ## FIND MATCHING DATA AFTER BUTTON IS CLICKED AND IS WAITING FOR ELEMENT TO APPEAR
-    # def test_wait_for_ajax_data(playwright):
-    #     browser = playwright.chromium.launch(headless=False, slow_mo=100)
-    #     context = browser.new_context()
-    #     page = context.new_page()
-    #     page.goto(BASE_URL)
-    #     page.click('text=AJAX Data')
-    #     page.locator("#ajaxButton").click()
-    #     page.wait_for_selector("#content > p")
-    #     locator = page.locator("#content > p")
-    #     expect(locator).to_contain_text('Data loaded with AJAX get request.')
-
-
-    #### POP UP HANDLER - 2 ARGS, page and el where is the element actioned that triggered the pop up ####
+# POP UP HANDLER - 2 ARGS, page and el where is the element actioned that triggered the pop up
 def popup_handler(page, el):
     page.once("dialog", lambda dialog: dialog.dismiss())
     page.locator(el).click()
